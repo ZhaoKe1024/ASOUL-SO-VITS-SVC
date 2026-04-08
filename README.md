@@ -1,5 +1,9 @@
 A-SOUL SVC Project
 
+This is a model open-source repository of SO-VITS-SVC4.1 for A-SOUL and members of Shining Stage (Zhijiang Entertainment).
+
+For the complete code project, please refer to SO-VITS-SVC4.1: [https://github.com/svc-develop-team/so-vits-svc](https://github.com/svc-develop-team/so-vits-svc).
+
 ## Model Open-Source
 
 🤗Model_on_Huggingface: [https://huggingface.co/CullenZhao/ASOUL-SVC/edit/main/README.md](https://huggingface.co/CullenZhao/ASOUL-SVC/edit/main/README.md)
@@ -25,6 +29,8 @@ Use software UVR5:
 [https://ultimatevocalremover.com/](https://ultimatevocalremover.com/)
 
 **Step 4: Inference script**:
+
+For the complete project, please refer to SO-VITS-SVC4.1: [https://github.com/svc-develop-team/so-vits-svc](https://github.com/svc-develop-team/so-vits-svc).
 
 Setting the basic information, and then modify the code in the script inference_main.py main() as follows:
 ```python
