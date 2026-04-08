@@ -6,7 +6,7 @@ For the complete code project, please refer to SO-VITS-SVC4.1: [https://github.c
 
 ## Model Open-Source
 
-🤗Model_on_Huggingface: [https://huggingface.co/CullenZhao/ASOUL-SVC/edit/main/README.md](https://huggingface.co/CullenZhao/ASOUL-SVC/edit/main/README.md)
+🤗Model_on_Huggingface: [https://huggingface.co/CullenZhao/ASOUL-SVC](https://huggingface.co/CullenZhao/ASOUL-SVC)
 
 ♦ Model_on_Modelscope: [https://www.modelscope.cn/models/ZhaoKe1024/ASOUL-SVC](https://www.modelscope.cn/models/ZhaoKe1024/ASOUL-SVC)
 
@@ -17,6 +17,12 @@ For the complete code project, please refer to SO-VITS-SVC4.1: [https://github.c
 [Downkyi github link: https://github.com/leiurayer/downkyi/releases](https://github.com/leiurayer/downkyi/releases)
 
 **Step 2: mp4 to wav**:
+
+Because the ffmpeg can not support space in filename, so we rename it first.
+```python
+os.rename(fname, fname.replace(" ", "_"))
+# audioprocess.py: ffmpeg_mp4_to_wav_separate()
+```
 
 ```shell
 ffmpeg -i input.mp4 -ar 44100 -f wav output.wav
