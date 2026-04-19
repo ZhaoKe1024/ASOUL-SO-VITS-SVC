@@ -1,8 +1,11 @@
-A-SOUL SVC Project
 
-This is a model open-source repository of SO-VITS-SVC4.1 for A-SOUL and members of Shining Stage (Zhijiang Entertainment).
+# A-SOUL SVC Project
+English | [简体中文](./README_cn.md)
 
-For the complete code project, please refer to SO-VITS-SVC4.1: [https://github.com/svc-develop-team/so-vits-svc](https://github.com/svc-develop-team/so-vits-svc).
+
+This is an open-source SO-VITS-SVC4.1 model repository for A-SOUL (Diana (Jia Ran), Bella (Bei La), Eileen (Nai Lin)) and members of Shining Stage (Fiona (Xin Yi) & Gladys (Si Nuo)) from Zhijiang Entertainment (incomplete version). Besides functioning as an AI-ASOUL singer, another key focus is to develop a "real-time chat application" using this model, featuring a "virtual pet" that combines speech recognition (currently using API cloud services), large language models (API cloud services), and TTS model (+ Voice Clone).
+
+For the complete code project of the SVC model, please refer to SO-VITS-SVC4.1: [https://github.com/svc-develop-team/so-vits-svc](https://github.com/svc-develop-team/so-vits-svc).
 
 ## Model Open-Source
 
@@ -97,3 +100,25 @@ if __name__ == '__main__':
 SO-VITS-SVC4.1 is adopted from the project: https://github.com/svc-develop-team/so-vits-svc.
 
 Thanks to the author, 羽毛布団 (bilibili id: 3493141443250876), for the project integration package [https://www.yuque.com/umoubuton/ueupp5](https://www.yuque.com/umoubuton/ueupp5).
+
+# Chat_with_ASOUL App
+Run the app:
+```shell
+python chatasoul.py
+```
+
+## Modifications to the Original Code
+Since the faiss library in the utils.py of the so-vits-svc4.1 project could not be installed successfully, I copied utils.py and renamed it to utils_infer.py, removing the following two lines of imports and related functions:
+```python
+import faiss
+......
+def train_index(spk_name,root_dir = "dataset/44k/"):  #from: RVC https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
+    ......
+......
+```
+Then synchronously modify:
+models.py & inference/infer_tool.py
+```python
+# import utils
+import utils_infer as utils
+```
