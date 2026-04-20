@@ -40,6 +40,30 @@ class ModelLoaderThread(QThread):
         except Exception as e:
             self.load_finished.emit(False, str(e))
 
+def text_cleaning(text):
+    """清理文本，确保只包含汉字、基本标点符号、英文字母，不要出现奇怪的字符"""
+    import re
+    
+    # 允许的字符范围：
+    # \u4e00-\u9fff: 汉字
+    # a-zA-Z: 英文字母
+    # 0-9: 数字
+    # \u3000-\u303f: 中文标点
+    # \uff00-\uffef: 全角符号
+    # !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~: 基本英文标点
+    # \s: 空白字符
+    allowed_pattern = r'[^\u4e00-\u9fff\u3000-\u303f\uff00-\uffef!"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~\sa-zA-Z0-9]'
+    
+    # 删除不允许的字符
+    cleaned = re.sub(allowed_pattern, '', text)
+    
+    # 标准化空白字符：将多个连续空白合并为一个空格
+    cleaned = re.sub(r'\s+', ' ', cleaned)
+    
+    # 去除首尾空白
+    cleaned = cleaned.strip()
+    cleaned = cleaned.replace(" ", ",")
+    return cleaned
 
 class ChatWorker(QThread):
     response_ready = pyqtSignal(str, str)
@@ -54,12 +78,15 @@ class ChatWorker(QThread):
     
     def run(self):
         try:
-            system_prompt = "你是一个可爱、友善的虚拟助手，会用简短、温暖的话语回应用户。"
+            system_prompt = "你是一个可爱、友善的虚拟助手，会用简短、温暖的话语回应用户。但是请注意不要生成汉字或英文字母以外的任何字符（逗号和句号除外）"
             
             response_text = self.llm_client.chat(
                 prompt=self.user_input,
                 system_prompt=system_prompt
             )
+            # 确保回复内容里没有非中文或英文的字符
+            clean_text = text_cleaning(response_text)
+            print(clean_text)
             
             speaker_key = SPEAKERS.get(self.speaker, "jiaran")
             self.tts_service.current_speaker = self.speaker
@@ -67,12 +94,12 @@ class ChatWorker(QThread):
             output_path = os.path.join(tempfile.gettempdir(), "chatasoul_response.wav")
             
             audio_path = self.tts_service.text_to_speech(
-                text=response_text,
+                text=clean_text,
                 speaker=self.speaker,
                 output_path=output_path
             )
             
-            self.response_ready.emit(response_text, audio_path or "")
+            self.response_ready.emit(clean_text, audio_path or "")
             
         except Exception as e:
             self.error_occurred.emit(str(e))

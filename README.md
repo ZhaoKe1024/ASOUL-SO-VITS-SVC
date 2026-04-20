@@ -102,6 +102,18 @@ SO-VITS-SVC4.1 is adopted from the project: https://github.com/svc-develop-team/
 Thanks to the author, 羽毛布団 (bilibili id: 3493141443250876), for the project integration package [https://www.yuque.com/umoubuton/ueupp5](https://www.yuque.com/umoubuton/ueupp5).
 
 # Chat_with_ASOUL App
+Since so-vits-svc4.1 cannot be used directly as a TTS (Text to Speech) model, the following three libraries need to be installed:
+```shell
+pip install edge_tts langdetect praat-parselmouth
+```
+edge_tts is a library for converting text to speech, which converts user input text to speech via a public API.
+langdetect is a library for detecting the language of text, and praat-parselmouth is a library for parsing speech files by wrapping praat for Python.
+
+The actual execution flow is:
+1. User inputs text, calls the large language model, returns a response, then calls the edge_tts library to convert the response to speech.
+2. Load our trained SO-VITS-SVC model (./utils_infer.py slice_inference()) to convert the speech to the target voice.
+3. Play the response in the target voice.
+
 Run the app:
 ```shell
 python chatasoul.py

@@ -24,7 +24,7 @@ class LLMClient:
         base_url = self.config[self.model_name]["base_url"]
         return OpenAI(api_key=api_key, base_url=base_url)
     
-    def chat(self, prompt, system_prompt="You are a helpful assistant.", **kwargs):
+    def chat(self, prompt, system_prompt="你是一个智能语音助手，你会对我的对话进行回复，注意回复内容里不要有汉字或英文字母以外的字符，以免TTS程序无法识别。", **kwargs):
         print(f"Calling {self.model_name} of {self.user_name}")
         
         chat_completion = self.client.chat.completions.create(

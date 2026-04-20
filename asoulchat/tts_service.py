@@ -4,8 +4,8 @@ import subprocess
 import glob
 import librosa
 import soundfile
-
-from .config import BASE_DIR, MODEL_PATHS, SPEAKERS
+import traceback
+from .config import BASE_DIR, MODEL_PATHS, CONFIG_PATHS, SPEAKERS
 
 sys.path.insert(0, BASE_DIR)
 
@@ -43,14 +43,14 @@ class TTSService:
             return False, f"Model directory not found for {speaker}"
         
         try:
-            model_files = glob.glob(os.path.join(model_dir, "*.pth"))
-            config_files = glob.glob(os.path.join(model_dir, "*.json"))
-            
-            if not model_files or not config_files:
+            model_path = MODEL_PATHS.get(speaker_key)
+            config_path = CONFIG_PATHS.get(speaker_key)
+            print("Load ", model_path, config_path)
+            if not model_path or not config_path:
                 return False, f"Model files not found for {speaker}"
             
-            model_path = model_files[0]
-            config_path = config_files[0]
+            # model_path = model_files[0]
+            # config_path = config_files[0]
             
             model = Svc(
                 model_path,
@@ -107,18 +107,30 @@ class TTSService:
         import tempfile
         import numpy as np
         
-        tts_wav = os.path.join(BASE_DIR, "temp_tts.wav")
+        tts_wav = "./tts.wav"
         
         try:
             subprocess.run([
-                sys.executable,
-                os.path.join(BASE_DIR, "edgetts", "tts.py"),
+                "python",
+                os.path.join("./edgetts", "tts.py"),
                 text,
                 "zh",
                 "+0%",
-                "+0%"
+                "+0%",
+                "Female"
             ], check=True, capture_output=True)
+            # subprocess.run([
+            #     sys.executable,
+            #     os.path.join(BASE_DIR, "edgetts", "tts.py"),
+            #     text,
+            #     "zh",
+            #     "+0%",
+            #     "+0%",
+            #     "Female"
+            # ], check=True, capture_output=True)
+            # os.system(f"python ./edgetts/tts.py {text} zh-cn +0% +0% Female")
         except subprocess.CalledProcessError as e:
+            traceback.print_exc()
             raise RuntimeError(f"Edge TTS failed: {e}")
         
         if not os.path.exists(tts_wav):
@@ -138,15 +150,15 @@ class TTSService:
         
         try:
             audio = model.slice_inference(
-                tts_wav,
-                sid=speaker_key,
-                vc_transform=0,
+                raw_audio_path=tts_wav,
+                spk=speaker_key,
+                tran=0,
                 slice_db=-40,
-                cluster_ratio=0,
-                auto_f0=False,
-                noise_scale=0.4,
+                cluster_infer_ratio=0,
+                auto_predict_f0=False,
+                noice_scale=0.4,
                 pad_seconds=0.5,
-                cl_num=0,
+                clip_seconds=0,
                 lg_num=0,
                 lgr_num=0.75,
                 f0_predictor="pm",

@@ -103,6 +103,18 @@ SO-VITS-SVC4.1 采用自项目：https://github.com/svc-develop-team/so-vits-svc
 感谢作者 羽毛布団（哔哩哔哩 id：3493141443250876）提供的项目整合包 [https://www.yuque.com/umoubuton/ueupp5](https://www.yuque.com/umoubuton/ueupp5)。
 
 # Chat_with_ASOUL App
+由于 so-vits-svc4.1 似乎无法直接作为 TTS (Text to Speech) 模型使用，因此要安装下面三个库：
+```shell
+pip install edge_tts langdetect praat-parselmouth
+```
+edge_tts 是一个用于将文本转换为语音的库，会将用户的输入文本通过公开API转换为语音。
+langdetect 是一个用于检测文本语言的库，praat-parselmouth 是一个用于将 praat 封装为 Python 的解析语音文件的库。
+
+实际执行的流程为：
+1 用户输入文本，调用大模型，返回回答，然后调用 edge_tts 库，将回答转换为语音。
+2 加载我们训练好的 SO-VITS-SVC 模型(./utils_infer.py slice_inference())，将语音转换为目标音色。
+3 播放目标音色的回答
+
 运行App：
 ```shell
 python chatasoul.py
@@ -123,5 +135,3 @@ models.py & inference/infer_tool.py
 # import utils
 import utils_infer as utils
 ```
-
-
