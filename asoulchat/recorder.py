@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/19 23:59
+# @Author: ZhaoKe
+# @File : recorder.py
+# @Software: trae
 import os
 import wave
 import tempfile

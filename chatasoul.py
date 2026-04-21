@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/19 23:58
+# @Author: ZhaoKe
+# @File : chatasoul.py
+# @Software: trae
 import sys
 import os
 
@@ -342,7 +348,7 @@ class ChataSoulWindow(QMainWindow):
         
         try:
             self.status_label.setText("正在识别语音...")
-            text = self.asr_client.recognize(audio_path)
+            text = self.asr_client.recognize_file(audio_path)
             
             try:
                 os.remove(audio_path)

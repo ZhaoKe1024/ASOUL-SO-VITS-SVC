@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/19 23:58
+# @Author: ZhaoKe
+# @File : ui_components.py
+# @Software: trae
 import os
 from PyQt5.QtCore import Qt, QSize, pyqtSignal, QTimer
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QFont

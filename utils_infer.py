@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/21 23:59
+# @Author: ZhaoKe
+# @File : utils_infer.py
+# @Software: trae
 import argparse
 import glob
 import json

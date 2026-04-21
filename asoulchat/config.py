@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/19 23:58
+# @Author: ZhaoKe
+# @File : config.py
+# @Software: trae
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/07 21:35
+# @Author: ZhaoKe
+# @File : inference_main.py
+# @Software: trae
 import logging
 import os.path
 

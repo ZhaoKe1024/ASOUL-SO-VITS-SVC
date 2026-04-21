@@ -1,3 +1,9 @@
+#!/user/culle/.conda/envs/llms
+# -*- coding: utf_8 -*-
+# @Time : 2026/04/19 23:58
+# @Author: ZhaoKe
+# @File : audio_player.py
+# @Software: trae
 import os
 import sys
 from PyQt5.QtCore import QThread, pyqtSignal
