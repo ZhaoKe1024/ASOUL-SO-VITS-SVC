@@ -127,7 +127,9 @@ class ChataSoulWindow(QMainWindow):
         self.is_processing = False
         
         try:
-            self.asr_client = ASRClient()
+            config = json.load(open("./private/llm_config.json", "r", encoding="utf-8"))
+            api_key = config.get("qwen", {}).get("api_key")
+            self.asr_client = ASRClient(api_key=api_key, region="beijing")
         except Exception as e:
             print(f"ASR client initialization failed: {e}")
         
@@ -348,7 +350,7 @@ class ChataSoulWindow(QMainWindow):
         
         try:
             self.status_label.setText("正在识别语音...")
-            text = self.asr_client.recognize_file(audio_path)
+            text = self.asr_client.recognize_file(audio_path).get('text', '')
             
             try:
                 os.remove(audio_path)

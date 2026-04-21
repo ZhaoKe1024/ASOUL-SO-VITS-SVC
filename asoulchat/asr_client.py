@@ -216,7 +216,26 @@ class ASRClient:
             if result.status_code == HTTPStatus.OK:
                 sentence = result.get_sentence()
                 print('识别结果：', sentence)
-                return sentence
+                # 确保返回的字典包含 'text' 键
+                if isinstance(sentence, dict):
+                    if 'text' in sentence:
+                        return sentence
+                    else:
+                        # 如果字典中没有 'text' 键，但有其他文本字段，尝试适配
+                        text_content = sentence.get('sentence', '') or str(sentence)
+                        return {'text': text_content}
+                elif isinstance(sentence, list):
+                    # 如果返回的是列表，尝试取第一个元素
+                    if sentence:
+                        return {'text': sentence[0]["text"]}
+                    else:
+                        return {'text': ''}
+                elif isinstance(sentence, str):
+                    # 如果返回的是字符串，包装成字典格式
+                    return {'text': sentence}
+                else:
+                    # 其他类型，转换为字符串
+                    return {'text': str(sentence)}
             else:
                 print('识别错误：', result.message)
                 return None

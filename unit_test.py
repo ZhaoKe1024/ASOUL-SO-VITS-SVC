@@ -243,7 +243,7 @@ def test_non_streaming_with_error_handling():
     测试示例3：带错误处理的完整示例
     """
     config = json.load(open("./private/llm_config.json", "r", encoding="utf-8"))
-    api_key = config.get("qwen-235b", {}).get("api_key")
+    api_key = config.get("qwen", {}).get("api_key")
     
     # 测试文件
     audio_file = "./jiaran_sing_demo.mp3"
