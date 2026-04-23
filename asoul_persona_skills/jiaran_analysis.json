@@ -1,0 +1,229 @@
+{
+  "total_quotes": 26245,
+  "avg_sentence_length": 10.401943227281388,
+  "tone_particles": {
+    "哈": 17823,
+    "啊": 7368,
+    "呀": 2955,
+    "吧": 2940,
+    "哦": 2094,
+    "哎": 1566,
+    "呢": 1511,
+    "啦": 1057,
+    "嘛": 826,
+    "嗯": 641
+  },
+  "sentence_types": {
+    "statement": 1.0,
+    "question": 0.0,
+    "exclamation": 0.0
+  },
+  "language_mix": {
+    "cn": 0.9881762055362223,
+    "en": 0.011823794463777636
+  },
+  "frequent_en_phrases": [
+    {
+      "phrase": "diana",
+      "count": 86
+    },
+    {
+      "phrase": "soul",
+      "count": 60
+    },
+    {
+      "phrase": "soulul",
+      "count": 38
+    },
+    {
+      "phrase": "asoul",
+      "count": 32
+    },
+    {
+      "phrase": "tag",
+      "count": 26
+    },
+    {
+      "phrase": "sc",
+      "count": 18
+    },
+    {
+      "phrase": "oh",
+      "count": 15
+    },
+    {
+      "phrase": "ai",
+      "count": 15
+    },
+    {
+      "phrase": "mua",
+      "count": 15
+    },
+    {
+      "phrase": "wink",
+      "count": 9
+    },
+    {
+      "phrase": "so",
+      "count": 8
+    },
+    {
+      "phrase": "sorry",
+      "count": 8
+    },
+    {
+      "phrase": "aa",
+      "count": 8
+    },
+    {
+      "phrase": "god",
+      "count": 7
+    },
+    {
+      "phrase": "go",
+      "count": 6
+    },
+    {
+      "phrase": "ppt",
+      "count": 6
+    },
+    {
+      "phrase": "slogan",
+      "count": 5
+    },
+    {
+      "phrase": "ktv",
+      "count": 5
+    },
+    {
+      "phrase": "get",
+      "count": 5
+    },
+    {
+      "phrase": "call",
+      "count": 5
+    }
+  ],
+  "common_phrases": [
+    {
+      "phrase": "哈哈",
+      "count": 11850
+    },
+    {
+      "phrase": "哈哈哈",
+      "count": 6729
+    },
+    {
+      "phrase": "然然",
+      "count": 5863
+    },
+    {
+      "phrase": "嘉心",
+      "count": 4980
+    },
+    {
+      "phrase": "心糖",
+      "count": 4975
+    },
+    {
+      "phrase": "嘉心糖",
+      "count": 4954
+    },
+    {
+      "phrase": "嘉然",
+      "count": 3921
+    },
+    {
+      "phrase": "糖糖",
+      "count": 3318
+    },
+    {
+      "phrase": "哈哈哈哈",
+      "count": 3035
+    },
+    {
+      "phrase": "啊哈",
+      "count": 1474
+    },
+    {
+      "phrase": "啊哈哈",
+      "count": 1216
+    },
+    {
+      "phrase": "什么",
+      "count": 1126
+    },
+    {
+      "phrase": "糖说",
+      "count": 1086
+    },
+    {
+      "phrase": "哎呀",
+      "count": 1052
+    },
+    {
+      "phrase": "然的",
+      "count": 1033
+    },
+    {
+      "phrase": "的嘉",
+      "count": 992
+    },
+    {
+      "phrase": "没有",
+      "count": 972
+    },
+    {
+      "phrase": "嘿嘿",
+      "count": 900
+    },
+    {
+      "phrase": "就是",
+      "count": 872
+    },
+    {
+      "phrase": "啊哈哈哈",
+      "count": 872
+    },
+    {
+      "phrase": "还有",
+      "count": 864
+    },
+    {
+      "phrase": "可以",
+      "count": 856
+    },
+    {
+      "phrase": "你们",
+      "count": 819
+    },
+    {
+      "phrase": "糖们",
+      "count": 802
+    },
+    {
+      "phrase": "哈啊",
+      "count": 793
+    },
+    {
+      "phrase": "这个",
+      "count": 766
+    },
+    {
+      "phrase": "不是",
+      "count": 765
+    },
+    {
+      "phrase": "糖糖说",
+      "count": 741
+    },
+    {
+      "phrase": "哈哈啊",
+      "count": 720
+    },
+    {
+      "phrase": "有糖",
+      "count": 684
+    }
+  ]
+}

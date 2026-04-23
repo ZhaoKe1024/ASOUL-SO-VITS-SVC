@@ -254,8 +254,9 @@ class ASRClient:
         audio_source: str = 'microphone',
         sample_rate: int = 16000,
         on_result: Optional[Callable[[str, bool], None]] = None,
-        on_error: Optional[Callable[[str], None]] = None
-    ):
+        on_error: Optional[Callable[[str], None]] = None,
+        return_results: bool = True
+    ) -> Optional[list]:
         """
         流式调用：识别实时音频流（如麦克风输入）
         
@@ -264,6 +265,11 @@ class ASRClient:
             sample_rate: 采样率，支持 8000 或 16000
             on_result: 识别结果回调函数，参数为 (text: str, is_final: bool)
             on_error: 错误回调函数，参数为 (error_message: str)
+            return_results: 是否返回所有识别结果列表（默认True）
+            
+        Returns:
+            如果 return_results=True，返回所有最终识别结果的列表
+            如果 return_results=False，返回 None
         """
         try:
             import pyaudio
@@ -279,6 +285,9 @@ class ASRClient:
         recognition = None
         mic = None
         stream = None
+        
+        # 用于收集识别结果的列表
+        all_results = []
         
         # 定义回调类
         class StreamCallback(RecognitionCallback):
@@ -363,15 +372,23 @@ class ASRClient:
         recognition.start()
         print("按 Ctrl+C 停止录音和识别...")
         
-        # 音频数据发送循环
-        while True:
-            if stream:
-                data = stream.read(block_size, exception_on_overflow=False)
-                recognition.send_audio_frame(data)
-            else:
-                break
+        try:
+            # 音频数据发送循环
+            while True:
+                if stream:
+                    data = stream.read(block_size, exception_on_overflow=False)
+                    recognition.send_audio_frame(data)
+                else:
+                    break
+        except KeyboardInterrupt:
+            print("\n检测到键盘中断...")
+        finally:
+            recognition.stop()
         
-        recognition.stop()
+        # 返回收集的识别结果（如果启用）
+        if return_results:
+            return all_results
+        return None
 
 
 def recognize_audio(audio_file_path: str, api_key: Optional[str] = None) -> Optional[str]:
@@ -395,8 +412,9 @@ def recognize_audio(audio_file_path: str, api_key: Optional[str] = None) -> Opti
 def recognize_stream_mic(
     api_key: Optional[str] = None,
     on_result: Optional[Callable[[str, bool], None]] = None,
-    on_error: Optional[Callable[[str], None]] = None
-):
+    on_error: Optional[Callable[[str], None]] = None,
+    return_results: bool = True
+) -> Optional[list]:
     """
     便捷函数：从麦克风实时识别（流式调用）
     
@@ -404,12 +422,18 @@ def recognize_stream_mic(
         api_key: DashScope API密钥
         on_result: 识别结果回调函数，参数为 (text: str, is_final: bool)
         on_error: 错误回调函数，参数为 (error_message: str)
+        return_results: 是否返回所有识别结果列表（默认True）
+        
+    Returns:
+        如果 return_results=True，返回所有最终识别结果的列表
+        如果 return_results=False，返回 None
     """
     client = ASRClient(api_key=api_key)
-    client.recognize_stream(
+    return client.recognize_stream(
         audio_source='microphone',
         on_result=on_result,
-        on_error=on_error
+        on_error=on_error,
+        return_results=return_results
     )
 
 

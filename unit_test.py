@@ -285,6 +285,183 @@ def test_non_streaming_with_error_handling():
     return None
 
 
+# ==================== 流式调用测试示例（麦克风输入） ====================
+
+
+def test_streaming_microphone_basic():
+    """
+    流式调用测试示例1：基本的麦克风实时语音识别
+    
+    按 Ctrl+C 停止录音和识别
+    """
+    import signal
+    
+    # 从配置文件加载API密钥
+    config = json.load(open("./private/llm_config.json", "r", encoding="utf-8"))
+    api_key = config.get("qwen-235b", {}).get("api_key")
+    
+    # 创建客户端
+    client = ASRClient(api_key=api_key, region="beijing")
+    
+    print("=" * 60)
+    print("流式语音识别测试 - 麦克风输入")
+    print("=" * 60)
+    print("请对着麦克风说话...")
+    print("按 Ctrl+C 停止录音和识别")
+    print("-" * 60)
+    
+    # 存储所有识别结果
+    all_results = []
+    
+    # 定义回调函数
+    def on_result(text: str, is_final: bool):
+        """处理识别结果回调"""
+        status = "[最终]" if is_final else "[中间]"
+        print(f"识别结果 {status}: {text}")
+        if is_final:
+            all_results.append(text)
+    
+    def on_error(error_message: str):
+        """处理错误回调"""
+        print(f"识别错误: {error_message}")
+    
+    try:
+        # 启动流式识别
+        client.recognize_stream(
+            audio_source='microphone',
+            sample_rate=16000,
+            on_result=on_result,
+            on_error=on_error
+        )
+    except KeyboardInterrupt:
+        print("\n用户中断了识别")
+    except Exception as e:
+        print(f"识别过程出错: {e}")
+    
+    # 输出最终汇总结果
+    print("\n" + "=" * 60)
+    print("识别完成")
+    print("=" * 60)
+    if all_results:
+        print("完整识别文本:")
+        full_text = " ".join(all_results)
+        print(full_text)
+    else:
+        print("没有识别到任何内容")
+    print("=" * 60)
+
+
+def test_streaming_microphone_with_callback():
+    """
+    流式调用测试示例2：带自定义回调的麦克风识别
+    
+    演示如何处理中间结果和最终结果，以及如何处理错误
+    """
+    import time
+    
+    # 从配置文件加载API密钥
+    config = json.load(open("./private/llm_config.json", "r", encoding="utf-8"))
+    api_key = config.get("qwen-235b", {}).get("api_key")
+    
+    # 创建客户端
+    client = ASRClient(api_key=api_key, region="beijing")
+    
+    print("=" * 60)
+    print("流式语音识别测试 - 带自定义回调")
+    print("=" * 60)
+    
+    # 统计信息
+    stats = {
+        'intermediate_count': 0,
+        'final_count': 0,
+        'start_time': None,
+        'all_texts': []
+    }
+    
+    def on_result(text: str, is_final: bool):
+        """自定义结果处理"""
+        timestamp = time.strftime("%H:%M:%S")
+        
+        if is_final:
+            stats['final_count'] += 1
+            stats['all_texts'].append(text)
+            print(f"[{timestamp}] ✓ 最终结果 #{stats['final_count']}: {text}")
+        else:
+            stats['intermediate_count'] += 1
+            # 中间结果只打印，不保存
+            print(f"[{timestamp}] ... 中间结果: {text}", end='\r')
+    
+    def on_error(error_message: str):
+        """自定义错误处理"""
+        timestamp = time.strftime("%H:%M:%S")
+        print(f"[{timestamp}] ✗ 错误: {error_message}")
+    
+    try:
+        stats['start_time'] = time.time()
+        
+        # 启动识别
+        client.recognize_stream(
+            audio_source='microphone',
+            sample_rate=16000,
+            on_result=on_result,
+            on_error=on_error
+        )
+        
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # 输出统计信息
+        elapsed_time = time.time() - stats['start_time'] if stats['start_time'] else 0
+        
+        print("\n" + "=" * 60)
+        print("识别统计")
+        print("=" * 60)
+        print(f"运行时间: {elapsed_time:.2f} 秒")
+        print(f"中间结果数: {stats['intermediate_count']}")
+        print(f"最终结果数: {stats['final_count']}")
+        print("\n完整识别文本:")
+        if stats['all_texts']:
+            print(" ".join(stats['all_texts']))
+        else:
+            print("(无)")
+        print("=" * 60)
+
+
+def test_streaming_microphone_simple():
+    """
+    流式调用测试示例3：精简版麦克风实时识别（推荐）
+    
+    只需一行代码调用，所有回调已在 asr_client.py 中定义
+    直接调用 recognize_stream_mic() 便捷函数并获取返回值
+    """
+    # 从配置文件加载API密钥
+    config = json.load(open("./private/llm_config.json", "r", encoding="utf-8"))
+    api_key = config.get("qwen-235b", {}).get("api_key")
+    
+    print("=" * 60)
+    print("精简版流式语音识别测试 - 麦克风输入")
+    print("=" * 60)
+    print("请对着麦克风说话，按 Ctrl+C 停止")
+    print("-" * 60)
+    
+    # 直接调用便捷函数并获取返回值
+    # 所有输出和回调逻辑已在 asr_client.py 中处理
+    results = recognize_stream_mic(api_key=api_key)
+    
+    # 打印返回的识别结果
+    print("-" * 60)
+    print("识别结束，返回结果如下：")
+    print("-" * 60)
+    if results:
+        print(f"共识别到 {len(results)} 句：")
+        for i, text in enumerate(results, 1):
+            print(f"  {i}. {text}")
+        print(f"\n完整文本：{''.join(results)}")
+    else:
+        print("未识别到任何内容")
+    print("=" * 60)
+
+
 # ==================== 主程序入口 ====================
 
 if __name__ == '__main__':
@@ -292,16 +469,29 @@ if __name__ == '__main__':
     运行测试示例
     
     可用的测试函数:
+    非流式调用（音频文件）:
     - test_non_streaming_single_file(): 单个文件识别测试
     - test_non_streaming_batch_files(): 批量文件识别测试
     - test_non_streaming_with_error_handling(): 带错误处理的完整示例
+    
+    流式调用（麦克风输入）:
+    - test_streaming_microphone_basic(): 基本的麦克风实时识别（自定义回调）
+    - test_streaming_microphone_with_callback(): 带统计的麦克风识别（自定义回调）
+    - test_streaming_microphone_simple(): 精简版麦克风识别（一行代码，返回结果）
+    - test_streaming_microphone_simple(): 精简版麦克风识别（推荐，一行代码）
     """
     
     print("=" * 60)
-    print("ASR 非流式调用测试")
+    print("ASR 语音识别测试")
+    print("=" * 60)
+    print("\n可用的测试类别:")
+    print("1. 非流式调用 - 识别音频文件")
+    print("2. 流式调用 - 麦克风实时识别")
     print("=" * 60)
     
     # 选择要运行的测试（取消注释相应的行）
+    
+    # ========== 非流式调用测试（音频文件）==========
     
     # 测试1: 单个文件识别
     # test_non_streaming_single_file()
@@ -309,8 +499,19 @@ if __name__ == '__main__':
     # 测试2: 批量文件识别
     # test_non_streaming_batch_files()
     
-    # 测试3: 带错误处理的完整示例（推荐）
-    test_non_streaming_with_error_handling()
+    # 测试3: 带错误处理的完整示例
+    # test_non_streaming_with_error_handling()
+    
+    # ========== 流式调用测试（麦克风输入）==========
+    
+    # 测试4: 基本的麦克风实时识别（自定义回调）
+    # test_streaming_microphone_basic()
+    
+    # 测试5: 带统计的麦克风识别（自定义回调）
+    # test_streaming_microphone_with_callback()
+    
+    # 测试6: 精简版麦克风识别（推荐，一行代码）
+    test_streaming_microphone_simple()
     
     print("\n" + "=" * 60)
     print("测试完成")

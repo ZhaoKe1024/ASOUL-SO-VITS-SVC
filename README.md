@@ -3,7 +3,9 @@
 English | [简体中文](./README_cn.md)
 
 
-This is an open-source SO-VITS-SVC4.1 model repository for A-SOUL (Diana (Jia Ran), Bella (Bei La), Eileen (Nai Lin)) and members of Shining Stage (Fiona (Xin Yi) & Gladys (Si Nuo)) from Zhijiang Entertainment (incomplete version). Besides functioning as an AI-ASOUL singer, another key focus is to develop a "real-time chat application" using this model, featuring a "virtual pet" that combines speech recognition (currently using API cloud services), large language models (API cloud services), and TTS model (+ Voice Clone).
+This is an open-source SO-VITS-SVC4.1 model repository for A-SOUL (Diana (Jia Ran), Bella (Bei La), Eileen (Nai Lin)) and members of Shining Stage (Fiona (Xin Yi) & Gladys (Si Nuo)) from Zhijiang Entertainment (incomplete version). Besides functioning as an AI-ASOUL singer, there are also:
+1. Develop "real-time conversation software" using this model, including "electronic pets" based on speech recognition (currently using API cloud services), big language models (API cloud services), and TTS models (+Voice Clone).
+2. Extract the SKILL of the idol's speaking style from the SRT file of recording and subtitling.
 
 For the complete code project of the SVC model, please refer to SO-VITS-SVC4.1: [https://github.com/svc-develop-team/so-vits-svc](https://github.com/svc-develop-team/so-vits-svc).
 
@@ -133,4 +135,12 @@ models.py & inference/infer_tool.py
 ```python
 # import utils
 import utils_infer as utils
+```
+
+# ASOUL.SKILL
+The documents related to SKILL production are available /In the asoul_person a_kills/directory, it has already been created and can be used directly.
+
+Taking Jiaran as an example, run the dialogue program as follows:
+```shell
+python ./asoul_persona_skills/build_jiaran_persona.py
 ```

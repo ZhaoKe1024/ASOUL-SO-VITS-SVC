@@ -1,8 +1,10 @@
 # A-SOUL SVC 项目
 [English](./README.md)| 简体中文
 
-这是一个针对 A-SOUL（嘉然、贝拉、乃琳） 以及闪耀舞台（心宜&思诺） 成员的开源 SO-VITS-SVC4.1 模型仓库（不完整版）。
-除了作为 AI-ASOUL歌手 功能之外，还有另一重点在于利用该模型开发“实时对话软件”，包含基于语音识别（目前采用API云服务）、大语言模型（API云服务）、和 TTS模型（+Voice Clone）的“电子宠物”。
+这是一个针对 A-SOUL（嘉然、贝拉、乃琳） 以及闪耀舞台（心宜&思诺） 成员的开源 SO-VITS-SVC4.1 模型仓库。
+除了作为 AI-ASOUL歌手 功能之外，还有：
+1. 利用该模型开发“实时对话软件”，包含基于语音识别（目前采用API云服务）、大语言模型（API云服务）、和 TTS模型（+Voice Clone）的“电子宠物”。
+2. 从录播转字幕的 srt 文件中蒸馏出偶像说话风格的SKILL。
 
 关于SVC模型完整的代码项目请参考 SO-VITS-SVC4.1：[https://github.com/svc-develop-team/so-vits-svc](https://github.com/svc-develop-team/so-vits-svc)。
 
@@ -134,4 +136,12 @@ models.py & inference/infer_tool.py
 ```python
 # import utils
 import utils_infer as utils
+```
+
+# ASOUL.SKILL
+SKILL 制作相关的文件在 ./asoul_persona_skills/ 目录下，而且已经制作好了，直接使用即可。
+
+以嘉然的为例，运行对话程序如下：
+```shell
+python ./asoul_persona_skills/build_jiaran_persona.py
 ```
