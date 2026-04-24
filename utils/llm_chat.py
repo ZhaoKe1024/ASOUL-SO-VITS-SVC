@@ -1,13 +1,8 @@
+import json
 from openai import OpenAI
 
 
-api_config = {
-    "qwen3-1.7b":{
-        "api_key":"sk-edf6b8ed104c4850ac5539c7ba8bf607",
-        "base_url":"https://dashscope.aliyuncs.com/compatible-mode/v1",
-        "model":"qwen3-1.7b"
-    }
-}
+api_config = json.load("./private/llm_config.json")["qwen-235b"]
 
 def llm_chat(prompt, system_prompt="You are a excellent assistant.", model_name="deepseek", user_name="zk"):
     """Official usage of Deepseek official website"""

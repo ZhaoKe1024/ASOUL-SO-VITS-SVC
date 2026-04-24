@@ -25,10 +25,43 @@ from typing import List, Dict, Any, Optional
 from collections import Counter
 from datetime import datetime
 use_llm_chat = True
-try:
-    from llm_chat import llm_chat
-except ImportError:
-    use_llm_chat = False
+from openai import OpenAI
+
+
+with open("./private/llm_config.json", 'r') as fin:
+    api_config = json.load(fin)
+
+def llm_chat(prompt, system_prompt="You are a excellent assistant.", model_name="deepseek", user_name="zk"):
+    """Official usage of Deepseek official website"""
+    api_key = api_config[model_name]["api_key"]
+    client = OpenAI(api_key=api_key, base_url=api_config[model_name]["base_url"])
+    print(f"calling {model_name} of {user_name}")
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": system_prompt,
+            },
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        model=api_config[model_name]["model"],
+        stream=False,
+        temperature=0.2,
+        extra_body={"enable_thinking": False}
+    )
+    # 获取 token 使用情况
+    print(f"提示 tokens: {chat_completion.usage.prompt_tokens}")
+    print(f"完成 tokens: {chat_completion.usage.completion_tokens}")  # 响应的tokens
+    print(f"总 tokens: {chat_completion.usage.total_tokens}")
+
+    # 响应内容
+    # print(f"响应: {chat_completion.choices[0].message.content}")
+
+    result = chat_completion.choices[0].message.content
+    return result
 # =============================================================================
 # 配置
 # =============================================================================
@@ -41,7 +74,7 @@ CONFIG = {
         "../ASOUL-REC-直播/SRT语音转字幕文件",
         "../AOSUL-REC-突击直播"
     ],
-    "output_dir": "./output",
+    "output_dir": "./asoul_persona_skills",
     "min_quote_length": 3,  # 最短台词长度
     "max_quote_length": 200,  # 最长台词长度
 }
@@ -56,7 +89,7 @@ JIRAN_MARKERS = {
 }
 
 # 其他成员的标识（用于排除）
-OTHER_MEMBERS = ["向晚", "贝拉", "乃琳", "珈乐"]
+OTHER_MEMBERS = ["嘉然", "贝拉", "乃琳"]
 
 
 # =============================================================================
@@ -871,7 +904,7 @@ class JiaranChatbot:
             llm_response = llm_chat(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                model_name="qwen3-1.7b"  # 使用配置好的模型
+                model_name="qwen-235b"  # 使用配置好的模型
             )
             
             # 清理回复（移除可能的冗余内容）
